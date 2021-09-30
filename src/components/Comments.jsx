@@ -17,7 +17,15 @@ class Comments extends React.Component {
           comment: '',
              rate: '',
         elementId: this.props.id
+        },
+         rate: {
+            one: '⭐️',
+            two: '⭐️⭐️',
+          three: '⭐️⭐️⭐️',
+           four: '⭐️⭐️⭐️⭐️',
+           five: '⭐️⭐️⭐️⭐️⭐️'
         }
+        
     }
 
 
@@ -116,6 +124,7 @@ class Comments extends React.Component {
                     <option>5</option>
                     </Form.Control>
                 </Form.Group>
+                {/* <p>{this.state.rate.one}</p> */}
                 <Form.Group controlId="exampleForm.ControlTextarea1">
                     <Form.Label className="text-light">Write a review</Form.Label>
                     <Form.Control as="textarea" rows={3}
@@ -136,9 +145,10 @@ class Comments extends React.Component {
             {
                 
                 this.state.comments.map(info => (
-                    <div>
-                        <ListGroup.Item key={info._id}>{info.comment}</ListGroup.Item>
-                        <DeleteComments key={info.id} id={info._id}/>
+                    <div key={info._id} >
+                        <ListGroup.Item >{info.comment}</ListGroup.Item>
+                        <ListGroup.Item >{this.state.rate.two}</ListGroup.Item>
+                        <DeleteComments id={info._id}/>
                     </div>
                     ))
                     
