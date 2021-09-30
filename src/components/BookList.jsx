@@ -14,8 +14,7 @@ class BookList extends Component {
 
         state = {
             title: '',
-            queryBooks: Horror,
-            comments: []
+            queryBooks: Horror
         }
 
             filterBooks = (query) => {
@@ -24,6 +23,10 @@ class BookList extends Component {
             )
             this.setState({ queryBooks });
             }
+
+        
+
+
 
     render() {
         return (
