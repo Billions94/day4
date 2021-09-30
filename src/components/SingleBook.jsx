@@ -47,7 +47,9 @@ class SingleBook extends Component {
                 <div>
                     {
                         this.state.selected ?
-                        <Comments id={this.props.book.asin}/>  
+                        <div>
+                            <Comments id={this.props.book.asin}/>
+                         </div> 
                         :
                         null                 
                     }

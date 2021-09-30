@@ -2,17 +2,21 @@
 import React from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 // import ListGroupItem  from 'react-bootstrap/ListGroupItem'
-import FormControl  from 'react-bootstrap/FormControl'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import DeleteComments from './DeleteComments'
+
+// import Button from 'react-bootstrap/Button'
 
 
 class Comments extends React.Component {
 
     state = {
          comments: [],
-      addComments: {
+      addComment: {
           comment: '',
              rate: '',
-        elementId: ''
+        elementId: this.props.id
         }
     }
 
@@ -44,30 +48,39 @@ class Comments extends React.Component {
         }
     }
 
-    postComment = async (comment)=>{
+    postComment = async (e)=>{
+        e.preventDefault()
+    
+        
+
         try{
             let response = await fetch('https://striveschool-api.herokuapp.com/api/comments/', {
                 method: 'POST',
-                body:JSON.stringify(comment),
+                body:JSON.stringify(this.state.addComment),
                 headers: {
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMWM5NDRiYjUzZDAwMTViMTllY2MiLCJpYXQiOjE2MzMwMDE1NzksImV4cCI6MTYzNDIxMTE3OX0.WGqdgb0uXW7-MCUC94FOKrTEainfaSnnNBv6Le-F7uA",
-            'Content-Type': 'application/json',
-        }
+             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjJhYTRiYjUzZDAwMTViMTllZGUiLCJpYXQiOjE2MzI5OTgxNzMsImV4cCI6MTYzNDIwNzc3M30.W2FmJgztmFyCsYsNpP-CJ5-vBcKzZG3RTeo4CLvwNR8",
+             "Content-Type": "application/json"
             }
-            )
+            })
             if(response.ok){
-                console.log('we made it')
+                alert('Your review was successfully added')
+                                this.setState({
+                    ...this.state.addComment, addComment: {
+                        comment: '',
+                        rate: '',
+                        elementId: ''
+                    }
+                })
                 
                
             }else{
-                console.log('sike!!! you thought')
+                alert('Yikes!!! an error occurred while trying to add the review')
             }
 
+        } catch(e){
+            console.log(`yikes we got an error`, e)
         }
-        catch{
-            console.log('error')
-
-        }
+        
         
 
     }
@@ -77,30 +90,60 @@ class Comments extends React.Component {
 
     }
 
+    
+
     render() {
         return (
             <div>
-                {
+
+
+            <Form onSubmit={this.postComment}>
+                <Form.Group controlId="exampleForm.ControlSelect1">
+                    <Form.Label className="text-light">Rate book</Form.Label>
+                    <Form.Control as="select" 
+                     value={this.state.addComment.rate}
+                     onChange={e => this.setState({
+                        addComment: {
+                        ...this.state.addComment,
+                        rate: e.target.value
+                       }
+                    })}
+                    >
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group controlId="exampleForm.ControlTextarea1">
+                    <Form.Label className="text-light">Write a review</Form.Label>
+                    <Form.Control as="textarea" rows={3}
+                     value={this.state.addComment.comment}
+                     onChange={e => this.setState({
+                         addComment: {
+                         ...this.state.addComment,
+                         comment: e.target.value
+                        }
+                     })}
+                    />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                        Submit
+                </Button>
+            </Form>
+
+            {
                 
                 this.state.comments.map(info => (
-                    <ListGroup.Item key={info._id}>{info.comment}</ListGroup.Item>
+                    <div>
+                        <ListGroup.Item key={info._id}>{info.comment}</ListGroup.Item>
+                        <DeleteComments key={info.id} id={info._id}/>
+                    </div>
                     ))
+                    
                 }
-
-        <FormControl
-            placeholder="comment"
-            onClick={(event)=>{
-                    event.target.value.length > 3 &&
-                    console.log(this.state.comments)
-
-                    this.setState({
-                        addComments : {
-                            comment: event.target.value,
-                            rate: '4',
-                            elementId: this.state.comments[0].elementId
-                        }
-                    })
-                    this.postComment(this.state.addComments)}}/>
+                   
             </div>
         )
     }

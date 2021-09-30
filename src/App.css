@@ -130,6 +130,10 @@
   transition: border-color 0s ease-out 0.5s, width 0.25s ease-out 0.5s, height 0.25s ease-out 0.75s;
 }
 
+.short {
+  
+}
+
 /* .cardbody {
   background-color: red;
   animation-name: example;
