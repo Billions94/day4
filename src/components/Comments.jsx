@@ -98,17 +98,25 @@ class Comments extends React.Component {
 
     }
 
+    componentDidUpdate = (prevprops, prevstate) => {
+
+        if(prevprops.id !== this.props.id){
+            this.fetchComments(this.props.id)
+        }
+    }
+
     
 
     render() {
         return (
-            <div>
+            <>
 
 
-            <Form onSubmit={this.postComment}>
+            <Form onSubmit={this.postComment} style={{ minWidth: "100%" }}>
                 <Form.Group controlId="exampleForm.ControlSelect1">
                     <Form.Label className="text-light">Rate book</Form.Label>
                     <Form.Control as="select" 
+                    fullWidth
                      value={this.state.addComment.rate}
                      onChange={e => this.setState({
                         addComment: {
@@ -154,7 +162,7 @@ class Comments extends React.Component {
                     
                 }
                    
-            </div>
+            </>
         )
     }
 }
